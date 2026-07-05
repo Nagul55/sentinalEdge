@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sentinalEdge | Edge AI Vehicle Health Gateway</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/tabler-icons.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <h2 class="sr-only">
+      sentinalEdge vehicle health dashboard showing a fleet vehicle selector, an overall health score, three monitored signals, an adaptive baseline versus static threshold comparison chart, a cross-signal correlation alert, and an explainable alert feed, using simulated CAN and OBD data.
+    </h2>
+
+    <header class="app-header">
+      <div class="brand">
+        <p class="eyebrow">edge ai · vehicle health gateway</p>
+        <h1>sentinalEdge</h1>
+      </div>
+
+      <div class="header-actions">
+        <div class="vehicle-picker" id="vehiclePicker">
+          <label class="sr-only" id="vehiclePickerLabel" for="vehicleTrigger">Select vehicle</label>
+          <button
+            class="vehicle-trigger"
+            id="vehicleTrigger"
+            type="button"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-labelledby="vehiclePickerLabel vehicleCurrent"
+            aria-controls="vehicleList"
+          >
+            <span class="vehicle-trigger-copy">
+              <span class="vehicle-kicker"><i class="ti ti-device-analytics" aria-hidden="true"></i> fleet unit</span>
+              <span class="vehicle-current" id="vehicleCurrent">Choose vehicle</span>
+            </span>
+            <span class="vehicle-trigger-icon" aria-hidden="true"><i class="ti ti-chevron-down"></i></span>
+          </button>
+          <div class="vehicle-menu" id="vehicleList" role="listbox" tabindex="-1" aria-labelledby="vehiclePickerLabel"></div>
+          <select class="native-select" id="vehicleSelect" tabindex="-1" aria-hidden="true"></select>
+        </div>
+      </div>
+    </header>
+
+    <section class="metric-grid" aria-label="Vehicle summary">
+      <article class="card metric-card">
+        <p>vehicle health score</p>
+        <strong id="mHealth"></strong>
+      </article>
+      <article class="card metric-card">
+        <p>predicted service window</p>
+        <strong id="mService"></strong>
+      </article>
+      <article class="card metric-card">
+        <p>active alerts</p>
+        <strong id="mAlerts"></strong>
+      </article>
+    </section>
+
+    <section class="signal-grid" id="signalRow" aria-label="Live signal cards"></section>
+
+    <section class="card chart-card" aria-labelledby="heroTitle">
+      <div class="chart-head">
+        <h2 id="heroTitle"></h2>
+        <div class="segmented-control" role="group" aria-label="Model comparison">
+          <button class="seg-btn active" id="btnStatic" type="button">static threshold</button>
+          <button class="seg-btn" id="btnAdaptive" type="button">adaptive model</button>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas
+          id="heroChart"
+          role="img"
+          aria-label="Line chart comparing a decaying sensor signal against a static threshold line and an adaptive learned baseline band, showing when each model would raise an alert"
+        ></canvas>
+      </div>
+
+      <p id="heroExplain" class="chart-explain"></p>
+    </section>
+
+    <section id="correlationBanner" class="correlation-area" aria-live="polite"></section>
+
+    <section class="feed-section" aria-labelledby="feedTitle">
+      <h2 id="feedTitle">explainable alert feed</h2>
+      <div id="alertFeed" class="alert-feed"></div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
